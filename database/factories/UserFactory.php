@@ -1,6 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\Cliente;
+use App\Radio;
 use App\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -23,5 +26,26 @@ $factory->define(User::class, function (Faker $faker) {
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
+        'verified' => $verificado = $faker->randomElement([User::USUARIO_VERIFICADO, User::USUARIO_NO_VERIFICADO]),
+        'verification_token' => $verificado == User::USUARIO_VERIFICADO ? null : User::generarVerificationToken(),
+        'admin' => $faker->randomElement([User::SOPORTE, User::REGULAR])
+    ];
+});
+
+$factory->define(Cliente::class, function(Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+        'modalidad' => $faker->randomElement(['Alquiler', 'DEMO', 'Venta']),
+        'ejecutivo' => $faker->randomElement(['Nathalia', 'Cindy', 'Juan Carlos']),
+    ];
+});
+
+$factory->define(Radio::class, function(Faker $faker){
+    return [
+        'nombre' => $faker->word,
+        'imei' => $faker->creditCardNumber,
+        'modelo' => $faker->randomElement(['T199', 'T320', 'TM7']),
+        'status' => $faker->randomElement([Radio::USADO, Radio::NUEVO]),
+        'cliente_id' => Cliente::all()->random()->id,
     ];
 });

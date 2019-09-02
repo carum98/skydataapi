@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\User;
 
-class UserControler extends Controller
+class UserControler extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class UserControler extends Controller
     public function index()
     {
         $usuarios = User::all();
-        return response()->json(['data' => $usuarios], 200);
+        return $this->showAll($usuarios);
     }
 
     /**
@@ -52,7 +52,7 @@ class UserControler extends Controller
 
         $usuario = User::create($campos);
 
-        return response()->json(['data' => $usuario], 201);
+        return $this->showOne($usuario, 201);
     }
 
     /**
@@ -64,7 +64,7 @@ class UserControler extends Controller
     public function show($id)
     {
         $usuario = User::findOrFail($id);
-        return response()->json(['data' => $usuario], 200);
+        return $this->showOne($usuario);
     }
 
     /**
@@ -109,17 +109,17 @@ class UserControler extends Controller
         }
         if ($request->has('admin')) {
             if (!$user->esVerificado()) {
-                return response()->json(['error' => 'Solo usurios vefiricados puenden cambiar' , 'code' => 409], 409);
+                return $this->errorResponse('Solo usurios vefiricados puenden cambiar' , 409);
             }
             $user->admin = $request->admin;
         }
 
         if (!$user->isDirty()) {
-            return response()->json(['error'=> 'Se debe cambiar al menos un valor', 'code' => 422], 422);
+            return $this->errorResponse('Se debe cambiar al menos un valor', 422);
         }
 
         $user->save();
-        return response()->json(['data'=>$user]);
+        return $this->showOne($user);
     }
 
     /**
@@ -132,6 +132,6 @@ class UserControler extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['data'=> $user], 200);
+        return $this->showOne($user);
     }
 }

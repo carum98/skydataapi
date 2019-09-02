@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Cliente;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Cliente;
 
-class ClienteControler extends Controller
+class ClienteControler extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ClienteControler extends Controller
     public function index()
     {
         $clientes = Cliente::all();
-        return response()->json(['data'=>$clientes], 200);
+        return $this->showAll($clientes);
     }
 
     /**
@@ -49,7 +49,7 @@ class ClienteControler extends Controller
         $campos = $request->all();
         $cliente = Cliente::create($campos);
 
-        return response()->json(['data'=>$cliente],201);
+        return $this->showOne($cliente, 201);
     }
 
     /**
@@ -61,7 +61,7 @@ class ClienteControler extends Controller
     public function show($id)
     {
         $cliente = Cliente::findOrFail($id);
-        return response()->json(['data'=>$cliente], 200);
+        return $this->showOne($cliente);
     }
 
     /**
@@ -96,11 +96,11 @@ class ClienteControler extends Controller
             $cliente->modalidad = $request->modalidad;
         }
         if (!$cliente->isDirty()) {
-            return response()->json(['error' => 'Tiene que introducir al menos un campo', 'code'=>422], 422);
+            return $this->errorResponse('Tiene que introducir al menos un campo', 422);
         }
 
         $cliente->save();
-        return response()->json(['data'=> $cliente]);
+        return $this->showOne($cliente);
     }
 
     /**
@@ -113,6 +113,6 @@ class ClienteControler extends Controller
     {
         $cliente = Cliente::findOrFail($id);
         $cliente->delete();
-        return response()->json(['data'=>$cliente],200);
-    }
+        return $this->showOne($cliente);
+    }   
 }

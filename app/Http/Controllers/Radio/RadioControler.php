@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Radio;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Radio;
 
-class RadioControler extends Controller
+class RadioControler extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class RadioControler extends Controller
     public function index()
     {
         $radios = Radio::all();
-        return response()->json(['data'=>$radios], 200);
+        return $this->showAll($radios);
     }
 
     /**
@@ -49,7 +49,7 @@ class RadioControler extends Controller
         $campos = $request->all();
 
         $radio = Radio::create($campos);
-        return response()->json(['data'=> $radio], 201);
+        return $this->showOne($radio, 201);
     }
 
     /**
@@ -61,7 +61,7 @@ class RadioControler extends Controller
     public function show($id)
     {
         $radio = Radio::findOrFail($id);
-        return response()->json(['data'=>$radio],200);
+        return $this->showOne($radio);
     }
 
     /**
@@ -102,11 +102,11 @@ class RadioControler extends Controller
             $radio->cliente_id = $request->cliente_id;
         }
         if (!$radio->isDirty()) {
-            return response()->json(['error' => 'Tiene que introducir al menos un campo', 'code' => 422],422);
+            return $this->errorResponse('Tiene que introducir al menos un campo', 422);
         }
         $radio->save();
 
-        return response()->json(['data'=> $radio], 200);
+        return $this->showOne($radio);
     }
 
     /**
@@ -117,6 +117,8 @@ class RadioControler extends Controller
      */
     public function destroy($id)
     {
-        //
+        $radio = Radio::findOrFail($id);
+        $radio->delete();
+        return $this->showOne($radio);
     }
 }

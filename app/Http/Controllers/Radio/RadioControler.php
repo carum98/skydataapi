@@ -58,9 +58,8 @@ class RadioControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Radio $radio)
     {
-        $radio = Radio::findOrFail($id);
         return $this->showOne($radio);
     }
 
@@ -82,10 +81,8 @@ class RadioControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Radio $radio)
     {
-        $radio = Radio::findOrFail($id);
-
         if ($request->has('nombre')) {
             $radio->nombre = $request->nombre;
         }
@@ -115,9 +112,8 @@ class RadioControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Radio $radio)
     {
-        $radio = Radio::findOrFail($id);
         $radio->delete();
         return $this->showOne($radio);
     }

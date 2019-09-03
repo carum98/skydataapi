@@ -21,6 +21,10 @@ class DatabaseSeeder extends Seeder
         Radio::truncate();
         Cliente::truncate();
 
+        User::flushEventListeners();
+        Radio::flushEventListeners();
+        Cliente::flushEventListeners();
+        
         $user = 10;
         $clientes = 5;
         $radios = 15;

@@ -37,8 +37,6 @@ class ClienteControler extends ApiController
      */
     public function store(Request $request)
     {
-        $ejecutivos = Cliente::ejecutivos;
-        $modalidad = Cliente::modadlidad;
         $reglas = [
             'nombre' => 'required',
             'ejecutivo' => 'required',
@@ -58,9 +56,8 @@ class ClienteControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cliente $cliente)
     {
-        $cliente = Cliente::findOrFail($id);
         return $this->showOne($cliente);
     }
 
@@ -82,10 +79,8 @@ class ClienteControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cliente $cliente)
     {
-        $cliente = Cliente::findOrFail($id);
-
         if ($request->has('nombre')) {
             $cliente->nombre = $request->nombre;
         }
@@ -109,9 +104,8 @@ class ClienteControler extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cliente $cliente)
     {
-        $cliente = Cliente::findOrFail($id);
         $cliente->delete();
         return $this->showOne($cliente);
     }   

@@ -19,6 +19,7 @@ class CreateClientesTable extends Migration
             $table->string('ejecutivo');
             $table->string('modalidad');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

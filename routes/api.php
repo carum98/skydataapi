@@ -21,6 +21,7 @@ Route::resource('cliente','Cliente\ClienteControler');
 
 Route::resource('radio', 'Radio\RadioControler');
 
+Route::get('me', 'User\UserControler@me')->name('me');
 Route::resource('users', 'User\UserControler');
 
 Route::get('cliente/{cliente}/radios', 'RadioCliente\RadioClienteControler@cliente');

@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Traits\ApiResponser;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Barryvdh\Cors\CorsService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -56,6 +57,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $response = $this->hadleException($request, $exception);
+        app(CorsService::class)->addActualRequestHeaders($response, $request);
+        return $response;
+    }
+
+    public function hadleException($request, $exception)
+    {
         if ($exception instanceof ModelNotFoundException) {
             $modelo = class_basename($exception->getModel()); 
             return $this->errorResponse("No exite ninguna instancia de {$modelo} con el id especificado" , 404);
@@ -79,7 +87,6 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
         return $this->errorResponse('Falla inesperada', 500);
-
     }
 
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)

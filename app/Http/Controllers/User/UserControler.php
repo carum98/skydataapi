@@ -13,6 +13,7 @@ class UserControler extends ApiController
     public function __construct()
     {
         $this->middleware('auth:api')->except('store','verify','resent');
+        $this->middleware('scope:read-general')->only('index');
     }
     /**
      * Display a listing of the resource.
@@ -23,6 +24,12 @@ class UserControler extends ApiController
     {
         $usuarios = User::all();
         return $this->showAll($usuarios);
+    }
+
+    public function me(Request $request)
+    {
+        $user = $request->user();
+        return $this->showOne($user);
     }
 
     /**

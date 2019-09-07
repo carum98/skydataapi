@@ -10,6 +10,10 @@ use App\Mail\UserCreated;
 
 class UserControler extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('store','verify','resent');
+    }
     /**
      * Display a listing of the resource.
      *

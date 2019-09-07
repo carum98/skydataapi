@@ -26,3 +26,5 @@ Route::resource('users', 'User\UserControler');
 Route::get('cliente/{cliente}/radios', 'RadioCliente\RadioClienteControler@cliente');
 Route::get('users/verify/{token}', 'User\UserControler@verify')->name('verify');
 Route::get('users/{user}/resent', 'User\UserControler@resent')->name('resent');
+
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');

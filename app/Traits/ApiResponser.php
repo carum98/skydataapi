@@ -27,7 +27,7 @@ trait ApiResponser
         $collection = $this->shorData($collection);
         $collection = $this->paginate($collection);
         $collection = $this->cacheResponse($collection);
-        return response()->json(['data'=> $collection], $code);
+        return response()->json($collection, $code);
     }
 
     protected function shorData(Collection $collection)

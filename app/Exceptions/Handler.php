@@ -57,13 +57,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        $response = $this->hadleException($request, $exception);
-        app(CorsService::class)->addActualRequestHeaders($response, $request);
-        return $response;
-    }
+        // $response = $this->hadleException($request, $exception);
+        // app(CorsService::class)->addActualRequestHeaders($response, $request);
+        // return $response;
 
-    public function hadleException($request, $exception)
-    {
         if ($exception instanceof ModelNotFoundException) {
             $modelo = class_basename($exception->getModel()); 
             return $this->errorResponse("No exite ninguna instancia de {$modelo} con el id especificado" , 404);
@@ -87,6 +84,34 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
         return $this->errorResponse('Falla inesperada', 500);
+        
+    }
+
+    public function hadleException($request, $exception)
+    {
+        // if ($exception instanceof ModelNotFoundException) {
+        //     $modelo = class_basename($exception->getModel()); 
+        //     return $this->errorResponse("No exite ninguna instancia de {$modelo} con el id especificado" , 404);
+        // }
+        // if ($exception instanceof AuthenticationException) {
+        //     return $this->unauthenticated($request, $exception);
+        // }
+        // if ($exception instanceof AuthorizationException) {
+        //     return $this->errorResponse('No posee los permisos necesarios para ejecutar esta accion', 403);
+        // }
+        // if ($exception instanceof NotFoundHttpException) {
+        //     return $this->errorResponse('No se encontro la URL especificada', 404);
+        // }
+        // if ($exception instanceof MethodNotAllowedHttpException) {
+        //     return $this->errorResponse('El metodo especificado no es valido', 405);
+        // }
+        // if ($exception instanceof HttpException) {
+        //     return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
+        // }
+        // if (config('app.debug')) {
+        //     return parent::render($request, $exception);
+        // }
+        // return $this->errorResponse('Falla inesperada', 500);
     }
 
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)

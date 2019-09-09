@@ -116,6 +116,9 @@ class Handler extends ExceptionHandler
 
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
+        // if ($this->isFronted($request)) {
+        //     return redirect()->guest('login');
+        // }
         return $this->invalidJson($request, $e);
     }
 
@@ -126,7 +129,15 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        if ($this->isFronted($request)) {
+            return redirect()->guest('login');
+        }
         return $this->errorResponse('No auntenticado', 401);
+    }
+
+    private function isFronted($request)
+    {
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 
 }

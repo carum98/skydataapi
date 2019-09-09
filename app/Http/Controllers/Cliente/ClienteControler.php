@@ -13,7 +13,7 @@ class ClienteControler extends ApiController
     {
         $this->middleware('client.credentials')->only(['index','show']);
         $this->middleware('auth:api')->except(['index','show']);
-        $this->middleware('scope:craete-cliente')->only('store');
+        $this->middleware('scope:create-cliente')->only('store');
         // $this->middleware('scope:read-general')->only('index');
     }
     /**

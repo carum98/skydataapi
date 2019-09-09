@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::tokensCan([
             'create-radios' => 'Crear Radios',
-            'craete-cliente' => 'Crear Clientes',
+            'create-cliente' => 'Crear Clientes',
             'read-general' => 'Obtener informacion general'
         ]);
     }
